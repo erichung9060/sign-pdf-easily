@@ -568,9 +568,9 @@ export const SignPage = () => {
                     className="border border-border rounded-lg overflow-hidden"
                   />
                   {signatures
-                    .map((sig, globalIndex) => ({ sig, globalIndex }))
-                    .filter(({ sig }) => sig.page === index + 1)
-                    .map(({ sig, globalIndex }) => (
+                    .map((sig: Signature, globalIndex: number) => ({ sig, globalIndex }))
+                    .filter(({ sig }: { sig: Signature }) => sig.page === index + 1)
+                    .map(({ sig, globalIndex }: { sig: Signature; globalIndex: number }) => (
                       <div
                         key={globalIndex}
                         className="absolute group"
