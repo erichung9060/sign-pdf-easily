@@ -36,6 +36,7 @@ export const SignPage = () => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const [showDownloadDialog, setShowDownloadDialog] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -133,6 +134,8 @@ export const SignPage = () => {
       return;
     }
 
+    setSaving(true);
+
     try {
       const pdfBytes = await applySignaturesToPdf();
 
@@ -164,6 +167,8 @@ export const SignPage = () => {
       } else {
         toast.error("Save failed, please try again");
       }
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -464,11 +469,18 @@ export const SignPage = () => {
             </Button>
             <Button
               onClick={handleSaveSignatures}
-              disabled={signatures.length === 0}
+              disabled={signatures.length === 0 || saving}
               variant="outline"
               className="gap-2 border-2 flex-1 sm:flex-none"
             >
-              Save
+              {saving ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                "Save"
+              )}
             </Button>
             <Button
               onClick={handleDownloadClick}
