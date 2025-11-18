@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Copy, Check, FileSignature } from "lucide-react";
+import { Copy, Check, FileSignature, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
@@ -37,16 +37,21 @@ export const SharePage = () => {
     fetchDocument();
   }, [shareId, navigate]);
 
+  const shareUrl = `${window.location.origin}/sign/${shareId}`;
+
   const handleCopyLink = async () => {
-    const url = `${window.location.origin}/sign/${shareId}`;
     try {
-      await navigator.clipboard.writeText(url);
+      await navigator.clipboard.writeText(shareUrl);
       setCopied(true);
       toast.success("Link copied!");
       setTimeout(() => setCopied(false), 2000);
     } catch (error) {
       toast.error("Copy failed, please copy manually");
     }
+  };
+
+  const handleOpenLink = () => {
+    window.open(shareUrl, "_blank");
   };
 
   if (loading) {
@@ -94,13 +99,21 @@ export const SharePage = () => {
               <input
                 type="text"
                 readOnly
-                value={`${window.location.origin}/sign/${shareId}`}
+                value={shareUrl}
                 className="flex-1 p-4 bg-muted border border-border rounded-lg font-mono text-sm text-foreground"
               />
               <Button
+                onClick={handleOpenLink}
+                variant="outline"
+                className="gap-2 border-2 h-auto py-4"
+              >
+                <ExternalLink className="w-4 h-4" />
+                Open
+              </Button>
+              <Button
                 onClick={handleCopyLink}
                 variant="outline"
-                className="gap-2 border-2"
+                className="gap-2 border-2 h-auto py-4"
               >
                 {copied ? (
                   <>
