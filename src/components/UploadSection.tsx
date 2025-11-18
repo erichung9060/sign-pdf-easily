@@ -18,8 +18,8 @@ export const UploadSection = () => {
       return;
     }
 
-    if (file.size > 10 * 1024 * 1024) {
-      toast.error("File size cannot exceed 10MB");
+    if (file.size > 15 * 1024 * 1024) {
+      toast.error("File size cannot exceed 15MB");
       return;
     }
 
@@ -54,7 +54,7 @@ export const UploadSection = () => {
       toast.success("File uploaded successfully!");
       navigate(`/share/${shareId}`);
     } catch (error) {
-      toast.error("Upload failed, please try again");
+      toast.error("Upload failed, please try again. " + error.toString());
     } finally {
       setUploading(false);
     }
@@ -142,7 +142,7 @@ export const UploadSection = () => {
             className="hidden"
           />
           <span className="text-sm text-muted-foreground">
-            Maximum file size: 10MB
+            Maximum file size: 15MB
           </span>
         </div>
       </div>
